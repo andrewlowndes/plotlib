@@ -11,7 +11,7 @@ fn main() {
     let f3 = Plot::from_function(|x| x.sqrt() * 20., 0., 10.)
         .line_style(LineStyle::new().colour("brown").width(1.));
 
-    let v = ContinuousView::new().add(f1).add(f2).add(f3);
+    let v = ContinuousView::new().push(f1).push(f2).push(f3);
 
     Page::single(&v).save("function.svg").expect("saving svg");
 }

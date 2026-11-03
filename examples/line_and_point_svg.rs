@@ -12,7 +12,7 @@ fn main() {
         )
         .point_style(PointStyle::new());
 
-    let v = ContinuousView::new().add(l1);
+    let v = ContinuousView::new().push(l1);
     Page::single(&v)
         .save("line_and_point.svg")
         .expect("saving svg");

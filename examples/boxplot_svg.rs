@@ -10,8 +10,8 @@ fn main() {
         .style(&BoxStyle::new().fill("darkolivegreen"));
 
     let v = CategoricalView::new()
-        .add(b1)
-        .add(b2)
+        .push(b1)
+        .push(b2)
         .x_label("Experiment")
         .y_label("y");
 

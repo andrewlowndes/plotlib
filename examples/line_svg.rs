@@ -9,6 +9,6 @@ fn main() {
             .colour("burlywood")
             .linejoin(LineJoin::Round),
     );
-    let v = ContinuousView::new().add(l1);
+    let v = ContinuousView::new().push(l1);
     Page::single(&v).save("line.svg").expect("saving svg");
 }

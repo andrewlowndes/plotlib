@@ -20,8 +20,8 @@ use crate::axis;
 use crate::repr::ContinuousRepresentation;
 use crate::style::*;
 use crate::svg_render;
-use crate::text_render;
 use crate::svg_render::draw_marker;
+use crate::text_render;
 
 /// Representation of any plot with points in the XY plane, visualized as points and/or with lines
 /// in-between.
@@ -150,12 +150,11 @@ impl ContinuousRepresentation for Plot {
             const FONT_SIZE: f32 = 9.0;
 
             // Draw legend text
-            let legend_text = node::element::Text::new()
+            let legend_text = node::element::Text::new(legend)
                 .set("x", 0)
                 .set("y", 0)
                 .set("text-anchor", "start")
-                .set("font-size", FONT_SIZE)
-                .add(node::Text::new(legend));
+                .set("font-size", FONT_SIZE);
             group.append(legend_text);
 
             if let Some(ref style) = self.line_style {
@@ -185,7 +184,7 @@ impl ContinuousRepresentation for Plot {
         face_width: u32,
         face_height: u32,
     ) -> String {
-        let face_lines = if let Some(line_style) = &self.line_style {
+        let face_lines = if let Some(_line_style) = &self.line_style {
             unimplemented!("Text rendering does not yet support line plots")
         } else {
             text_render::empty_face(face_width, face_height)

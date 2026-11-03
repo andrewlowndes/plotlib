@@ -21,7 +21,7 @@ fn main() {
     let v = data
         .into_iter()
         .fold(plotlib::view::CategoricalView::new(), |view, datum| {
-            view.add(datum)
+            view.push(datum)
         });
 
     plotlib::page::Page::single(&v)

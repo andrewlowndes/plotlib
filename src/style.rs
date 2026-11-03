@@ -85,7 +85,7 @@ pub enum PointMarker {
     Star,
     Triangle,
     TriangleDown,
-    Diamond
+    Diamond,
 }
 
 #[derive(Debug, Default, Clone)]

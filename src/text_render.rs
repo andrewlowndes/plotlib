@@ -103,7 +103,7 @@ impl XAxisLabel {
     /// The number of cells the label will actually use
     /// We want this to always be an odd number
     fn footprint(&self) -> usize {
-        if self.len() % 2 == 0 {
+        if self.len().is_multiple_of(2) {
             self.len() + 1
         } else {
             self.len()
@@ -112,7 +112,7 @@ impl XAxisLabel {
 
     /// The offset, relative to the zero-point of the axis where the label should start to be drawn
     fn start_offset(&self) -> i32 {
-        self.offset as i32 - self.footprint() as i32 / 2
+        self.offset - self.footprint() as i32 / 2
     }
 }
 
@@ -163,9 +163,8 @@ pub fn render_y_axis_strings(y_axis: &axis::ContinuousAxis, face_height: u32) ->
         .collect();
 
     // Generate a list of strings to be the y-axis line itself
-    let y_axis_line_strings: Vec<String> = std::iter::repeat('+')
-        .take(1)
-        .chain(std::iter::repeat('|').take(face_height as usize))
+    let y_axis_line_strings: Vec<String> = std::iter::repeat_n('+', 1)
+        .chain(std::iter::repeat_n('|', face_height as usize))
         .map(|s| s.to_string())
         .collect();
 
@@ -197,7 +196,7 @@ pub fn render_y_axis_strings(y_axis: &axis::ContinuousAxis, face_height: u32) ->
 
 pub fn render_x_axis_strings(x_axis: &axis::ContinuousAxis, face_width: u32) -> (String, i32) {
     // Get the strings and offsets we'll use for the x-axis
-    let x_tick_map = tick_offset_map(x_axis, face_width as u32);
+    let x_tick_map = tick_offset_map(x_axis, face_width);
 
     // Create a string which will be printed to give the x-axis tick marks
     let x_axis_tick_string: String = (0..=face_width)
@@ -217,7 +216,7 @@ pub fn render_x_axis_strings(x_axis: &axis::ContinuousAxis, face_width: u32) -> 
 
     // This string will be printed, starting at start_offset relative to the x-axis zero cell
     let mut x_axis_label_string = "".to_string();
-    for label in (&x_labels).iter() {
+    for label in (x_labels).iter() {
         let spaces_to_append =
             label.start_offset() - start_offset - x_axis_label_string.len() as i32;
         if spaces_to_append.is_positive() {
@@ -234,9 +233,8 @@ pub fn render_x_axis_strings(x_axis: &axis::ContinuousAxis, face_width: u32) -> 
     }
 
     // Generate a list of strings to be the y-axis line itself
-    let x_axis_line_string: String = std::iter::repeat('+')
-        .take(1)
-        .chain(std::iter::repeat('-').take(face_width as usize))
+    let x_axis_line_string: String = std::iter::repeat_n('+', 1)
+        .chain(std::iter::repeat_n('-', face_width as usize))
         .collect();
 
     let x_axis_label = format!(
@@ -406,7 +404,11 @@ pub fn overlay(under: &str, over: &str, x: i32, y: i32) -> String {
 
     // Trim/add lines at beginning
     let split_over: Vec<String> = if y.is_negative() {
-        split_over.iter().skip(y.abs() as usize).cloned().collect()
+        split_over
+            .iter()
+            .skip(y.unsigned_abs() as usize)
+            .cloned()
+            .collect()
     } else if y.is_positive() {
         (0..y)
             .map(|_| (0..over_width).map(|_| ' ').collect())
@@ -420,7 +422,7 @@ pub fn overlay(under: &str, over: &str, x: i32, y: i32) -> String {
     let split_over: Vec<String> = if x.is_negative() {
         split_over
             .iter()
-            .map(|l| l.chars().skip(x.abs() as usize).collect())
+            .map(|l| l.chars().skip(x.unsigned_abs() as usize).collect())
             .collect()
     } else if x.is_positive() {
         split_over

@@ -58,8 +58,7 @@ Example
 
 - *Data*: A linear sequence of numbers as a Vec<f64>
 - *Representation*: A binned histogram, stored as a list of `Bin`s,
-                each of which is the bounds and the counts.
-                Blue bars with no casing.
+  each of which is the bounds and the counts. Blue bars with no casing.
 - *View*: Dimension 0 mapped to x-axis with range 5-19 and counts mapped to y-axis with range 0-60
 - *Page*: A single view on the page
 - *Rendering*: An SVG

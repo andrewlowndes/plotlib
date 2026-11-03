@@ -66,7 +66,7 @@ impl ContinuousView {
     }
 
     /// Add a representation to the view
-    pub fn add<R: ContinuousRepresentation + 'static>(mut self, repr: R) -> Self {
+    pub fn push<R: ContinuousRepresentation + 'static>(mut self, repr: R) -> Self {
         self.representations.push(Box::new(repr));
         self
     }
@@ -146,8 +146,8 @@ impl ContinuousView {
             });
         }
 
-        let x_label: String = self.x_label.clone().unwrap_or_else(|| "".to_string());
-        let y_label: String = self.y_label.clone().unwrap_or_else(|| "".to_string());
+        let x_label: String = self.x_label.clone().unwrap_or_default();
+        let y_label: String = self.y_label.clone().unwrap_or_default();
 
         let x_axis = axis::ContinuousAxis::new(x_range.lower, x_range.upper, self.x_max_ticks)
             .label(x_label);
@@ -208,10 +208,8 @@ impl View for ContinuousView {
 
         let (x_axis_string, start_offset) = text_render::render_x_axis_strings(&x_axis, face_width);
 
-        let left_gutter_width = std::cmp::max(
-            longest_y_label_width as i32 + 3,
-            start_offset.wrapping_neg(),
-        ) as u32;
+        let left_gutter_width =
+            std::cmp::max(longest_y_label_width + 3, start_offset.wrapping_neg()) as u32;
 
         let view_width = face_width + 1 + left_gutter_width + 1;
         let view_height = face_height + 4;
@@ -281,7 +279,7 @@ impl CategoricalView {
     /**
     Add a representation to the view
     */
-    pub fn add<R: CategoricalRepresentation + 'static>(mut self, repr: R) -> Self {
+    pub fn push<R: CategoricalRepresentation + 'static>(mut self, repr: R) -> Self {
         self.representations.push(Box::new(repr));
         self
     }

@@ -17,7 +17,7 @@ fn test_data_with_one_length() {
 
     // The 'view' describes what set of data is drawn
     let v = ContinuousView::new()
-        .add(s1)
+        .push(s1)
         .x_range(-5., 10.)
         .y_range(-2., 6.)
         .x_label("Some varying variable")
@@ -43,7 +43,7 @@ fn test_data_with_no_length() {
 
     // The 'view' describes what set of data is drawn
     let v = ContinuousView::new()
-        .add(s1)
+        .push(s1)
         .x_range(-5., 10.)
         .y_range(-2., 6.)
         .x_label("Some varying variable")
@@ -69,7 +69,7 @@ fn test_data_with_one_length_and_autoscaling_axes_limits() {
 
     // The 'view' describes what set of data is drawn
     let v = ContinuousView::new()
-        .add(s1)
+        .push(s1)
         .x_label("Some varying variable")
         .y_label("The response of something");
 

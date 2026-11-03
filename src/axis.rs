@@ -121,7 +121,7 @@ impl TickSteps {
         let base_step_scale = 10f64.powf(power);
         BASE_STEPS
             .iter()
-            .map(|&s| (f64::from(s) * base_step_scale))
+            .map(|&s| f64::from(s) * base_step_scale)
             .collect()
     }
 }
@@ -151,7 +151,7 @@ fn generate_ticks(min: f64, max: f64, step_size: f64) -> Vec<f64> {
             // standard spanning axis
             ticks.extend(
                 (1..)
-                    .map(|n| -1.0 * fix(f64::from(n) * step_size))
+                    .map(|n| -fix(f64::from(n) * step_size))
                     .take_while(|&v| v >= min)
                     .collect::<Vec<f64>>()
                     .iter()
@@ -167,7 +167,7 @@ fn generate_ticks(min: f64, max: f64, step_size: f64) -> Vec<f64> {
             // entirely negative axis
             ticks.extend(
                 (0..)
-                    .map(|n| -1.0 * fix((f64::from(n) * step_size) - max))
+                    .map(|n| -fix((f64::from(n) * step_size) - max))
                     .take_while(|&v| v >= min)
                     .collect::<Vec<f64>>()
                     .iter()

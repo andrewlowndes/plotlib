@@ -20,8 +20,6 @@ TODO:
     - What should be the default?
 */
 
-use std;
-
 use svg;
 
 use crate::axis;
@@ -60,7 +58,7 @@ impl Histogram {
         let mut max = v.iter().fold(-1. / 0., |a, &b| f64::max(a, b));
         let mut min = v.iter().fold(1. / 0., |a, &b| f64::min(a, b));
 
-        if (min - max).abs() < std::f64::EPSILON {
+        if (min - max).abs() < f64::EPSILON {
             min -= 0.5;
             max += 0.5;
         }

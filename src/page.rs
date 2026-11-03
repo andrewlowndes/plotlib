@@ -107,11 +107,11 @@ impl<'a> Page<'a> {
                     }
                 }
 
-                match svg::save(&path, &self.to_svg()?) {
+                match svg::save(path, &self.to_svg()?) {
                     Ok(ok) => Ok(ok),
-                    Err(error) => Err(errors::Error::FailedToSave(error))
+                    Err(error) => Err(errors::Error::FailedToSave(error)),
                 }
-            },
+            }
             _ => Ok(()),
         }
     }

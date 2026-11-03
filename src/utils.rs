@@ -3,11 +3,11 @@ use std::iter::{Skip, Zip};
 use std::slice::Iter;
 
 pub trait PairWise<T> {
-    fn pairwise(&self) -> Zip<Iter<T>, Skip<Iter<T>>>;
+    fn pairwise(&self) -> Zip<Iter<'_, T>, Skip<Iter<'_, T>>>;
 }
 
 impl<T> PairWise<T> for [T] {
-    fn pairwise(&self) -> Zip<Iter<T>, Skip<Iter<T>>> {
+    fn pairwise(&self) -> Zip<Iter<'_, T>, Skip<Iter<'_, T>>> {
         self.iter().zip(self.iter().skip(1))
     }
 }
@@ -20,7 +20,7 @@ pub fn median(s: &[f64]) -> f64 {
     let mut s = s.to_owned();
     s.sort_by(|a, b| a.partial_cmp(b).unwrap());
     match s.len() % 2 {
-        0 => (s[(s.len() / 2) - 1] / 2.) + (s[(s.len() / 2)] / 2.),
+        0 => (s[(s.len() / 2) - 1] / 2.) + (s[s.len() / 2] / 2.),
         _ => s[s.len() / 2],
     }
 }
@@ -31,7 +31,7 @@ pub fn quartiles(s: &[f64]) -> (f64, f64, f64) {
     }
     let mut s = s.to_owned();
     s.sort_by(|a, b| a.partial_cmp(b).unwrap());
-    let (a, b) = if s.len() % 2 == 0 {
+    let (a, b) = if s.len().is_multiple_of(2) {
         s.split_at(s.len() / 2)
     } else {
         (&s[..(s.len() / 2)], &s[((s.len() / 2) + 1)..])
@@ -52,7 +52,7 @@ pub fn range(s: &[f64]) -> (f64, f64) {
 
 /// Floor or ceiling the min or max to zero to avoid them both having the same value
 pub fn pad_range_to_zero(min: f64, max: f64) -> (f64, f64) {
-    if (min - max).abs() < std::f64::EPSILON {
+    if (min - max).abs() < f64::EPSILON {
         (
             if min > 0. { 0. } else { min },
             if max < 0. { 0. } else { max },

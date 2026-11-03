@@ -9,7 +9,10 @@ fn main() {
         .label("2")
         .style(&BoxStyle::new().fill("darkolivegreen"));
 
-    let v = CategoricalView::new().add(b1).add(b2).x_label("Experiment");
+    let v = CategoricalView::new()
+        .push(b1)
+        .push(b2)
+        .x_label("Experiment");
 
     Page::single(&v).save("barchart.svg").expect("saving svg");
 }
